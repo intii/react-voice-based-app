@@ -1,18 +1,34 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import ToDoList from './components/todolist';
+import config from './config';
 import './App.css';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      intent: '',
+      status: 'Not listening'
+    };
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+      <div className="app">
+        <header className="app__header">
+          <button onClick={this.startToListen} className="app__button">
+            Listen!
+          </button>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+        <p className="app_intro">
+          Estado: {this.state.status}
         </p>
+        <p className="app_intro">
+          Intent: {this.state.intent}
+        </p>
+        <ToDoList serviceName="apiai" config={config.apiai} />
       </div>
     );
   }
