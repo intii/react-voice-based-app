@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SpeechBasedComponent from 'react-speech-based-component';
+import './styles.css';
 
 class ToDoListener extends Component {
 
@@ -7,7 +8,8 @@ class ToDoListener extends Component {
     super(props);
 
     this.state = {
-      todos: []
+      todos: [],
+      completed: []
     };
   }
 
@@ -17,8 +19,24 @@ class ToDoListener extends Component {
     });
   }
 
+  completeToDo = (intent, data) => {
+    const ordinal = data.parameters.ordinal;
+    if (ordinal) {
+      const todoNumber = parseInt(ordinal, 10);
+      if (todoNumber <= this.state.todos.length) {
+        const order = todoNumber - 1;
+        if (!this.state.completed.includes(order)) {
+          this.setState({
+            completed: this.state.completed.concat(order)
+          });
+        }
+      }
+    }
+  }
+
   intentActionMap = {
-    "add-reminder": this.addToDo
+    'add-reminder': this.addToDo,
+    'complete-todo': this.completeToDo
   }
 
   render() {
@@ -29,7 +47,19 @@ class ToDoListener extends Component {
         config={this.props.config}
         intentActionMap={this.intentActionMap}
       >
-        { this.state.todos.map( todo => <p> {todo} </p>) }
+        <div className="todo-list__empty">
+          <div className="todo-list__wrapper">
+            Add a reminder...
+          </div>
+        </div>
+        <ul className="todo-list">
+          { this.state.todos.map((todo, index) => (
+            <li className={`todo-list__item ${this.state.completed.includes(index) && 'todo-list__item--checked'}`}> 
+              {todo} 
+            </li>
+          )) }
+        </ul>
+
       </SpeechBasedComponent>
     );
   }

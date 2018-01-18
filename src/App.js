@@ -17,17 +17,7 @@ class App extends Component {
   render() {
     return (
       <div className="app">
-        <header className="app__header">
-          <button onClick={this.startToListen} className="app__button">
-            Listen!
-          </button>
-        </header>
-        <p className="app_intro">
-          Estado: {this.state.status}
-        </p>
-        <p className="app_intro">
-          Intent: {this.state.intent}
-        </p>
+        <h1 className="app__title"> todos </h1>
         <ToDoList serviceName="apiai" config={config.apiai} />
       </div>
     );
